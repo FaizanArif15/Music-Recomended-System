@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Recommender System</title>
+    <link rel="stylesheet" href="static/style.css">
+    <script>
+        async function fetchRecommendations(event) {
+            event.preventDefault();
+            const selectedSong = document.querySelector("select[name='selected_song']").value;
+            const formData = new FormData();
+            formData.append("selected_song", selectedSong);
+            
+            const response = await fetch("/recommend", {
+                method: "POST",
+                body: formData
+            });
+            
+            const data = await response.json();
+            const container = document.getElementById("recommendations");
+            container.innerHTML = "";
+
+            data.names.forEach((name, index) => {
+                const div = document.createElement("div");
+                div.style.marginRight = "20px";
+                div.style.textAlign = "center";
+                
+                const p = document.createElement("p");
+                p.textContent = name;
+                
+                const img = document.createElement("img");
+                img.src = data.posters[index];
+                img.alt = name;
+                img.style.width = "150px";
+                img.style.height = "150px";
+
+                div.appendChild(p);
+                div.appendChild(img);
+                container.appendChild(div);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Music Recommender System</h1>
+    <form onsubmit="fetchRecommendations(event)">
+        <select name="selected_song">
+            {% for song in music_list %}
+                <option value="{{ song }}">{{ song }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Show Recommendation</button>
+    </form>
+    <div id="recommendations" style="display: flex; margin-top: 20px;"></div>
+</body>
+</html>

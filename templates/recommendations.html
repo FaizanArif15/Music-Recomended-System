@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Recommendations</title>
+</head>
+<body>
+    <h1>Recommended Songs</h1>
+    <div style="display: flex;">
+        {% for name, poster in zip(recommended_music_names, recommended_music_posters) %}
+            <div style="margin-right: 20px; text-align: center;">
+                <p>{{ name }}</p>
+                <img src="{{ poster }}" alt="{{ name }}" style="width: 150px; height: 150px;">
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
